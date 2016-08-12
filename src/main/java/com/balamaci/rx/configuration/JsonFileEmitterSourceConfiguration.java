@@ -9,11 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import rx.Observable;
 import rx.Observer;
 import rx.subjects.PublishSubject;
 
-import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 
@@ -47,7 +47,8 @@ public class JsonFileEmitterSourceConfiguration {
         Supplier<Integer> waitForMillis = () -> 200;
 //        Supplier<Integer> waitForMillis = randomMillisWait(0,500);
 
-        Executors.newSingleThreadExecutor().submit(() -> produceEventsFromJsonFile(publishSubject, waitForMillis));
+        new SimpleAsyncTaskExecutor("json-hardcoded-file")
+                .submit(() -> produceEventsFromJsonFile(publishSubject, waitForMillis));
     }
 
 
