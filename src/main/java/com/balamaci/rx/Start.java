@@ -1,8 +1,8 @@
 package com.balamaci.rx;
 
-import com.balamaci.rx.configuration.AmqpSourceConfiguration;
+import com.balamaci.rx.configuration.AmqpSourceEmitterConfiguration;
 import com.balamaci.rx.configuration.AppConfig;
-import com.balamaci.rx.configuration.JsonEventsEmitterConfiguration;
+import com.balamaci.rx.configuration.JsonFileEmitterSourceConfiguration;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -19,8 +19,8 @@ public class Start {
 //        context.getEnvironment().addActiveProfile("write-events-to-file");
 
         context.register(AppConfig.class);
-        context.register(AmqpSourceConfiguration.class);
-        context.register(JsonEventsEmitterConfiguration.class);
+        context.register(AmqpSourceEmitterConfiguration.class);
+        context.register(JsonFileEmitterSourceConfiguration.class);
 
 
         context.scan("com.balamaci.rx.observable");

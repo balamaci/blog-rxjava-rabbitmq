@@ -16,7 +16,7 @@ import java.util.function.Predicate;
  */
 public class Json {
 
-    public static JsonArray readJsonArray(String fileName) {
+    public static JsonArray readJsonArrayFromFile(String fileName) {
         File jsonTestFile = new File(fileName);
         JsonParser jsonParser = new JsonParser();
         try {

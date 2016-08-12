@@ -45,7 +45,7 @@ public class UserService {
 
     private Observable<Pair<String, UserScoring>> loadHardcodedUserObservableFromFile() {
         return Observable.<Pair<String, UserScoring>>create(subscriber -> {
-            JsonArray userScoreArray = Json.readJsonArray("scoring.json");
+            JsonArray userScoreArray = Json.readJsonArrayFromFile("scoring.json");
             userScoreArray.forEach((jsonElement) -> {
                 JsonObject scoringJson = (JsonObject) jsonElement;
                 String username = scoringJson.get("username").getAsString();

@@ -31,7 +31,7 @@ import java.io.UnsupportedEncodingException;
 @Configuration
 @PropertySource("classpath:application.properties")
 @Profile("amqp")
-public class AmqpSourceConfiguration {
+public class AmqpSourceEmitterConfiguration {
 
     private final static String queueName = "logstash-processing-queue";
 

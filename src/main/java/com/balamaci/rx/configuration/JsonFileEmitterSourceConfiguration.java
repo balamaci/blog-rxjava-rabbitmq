@@ -14,35 +14,42 @@ import rx.Observer;
 import rx.subjects.PublishSubject;
 
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
+
+import static com.balamaci.rx.util.SleepUtil.sleepMillis;
 
 /**
  * @author sbalamaci
  */
 @Configuration
 @Profile("hardcoded-events")
-public class JsonEventsEmitterConfiguration {
+public class JsonFileEmitterSourceConfiguration {
 
-    private static final Logger log = LoggerFactory.getLogger(JsonEventsEmitterConfiguration.class);
+    private static final Logger log = LoggerFactory.getLogger(JsonFileEmitterSourceConfiguration.class);
 
     @Bean
-    Receiver receiver() {
+    public Receiver receiver() {
         return new Receiver();
     }
 
 
     @Bean(name = "events")
-    public Observable<JsonObject> emitEvents() {
-        startEmitting();
+    public Observable<JsonObject> emitEvents(Receiver receiver) {
+        startEmitting(receiver);
 
-        return receiver().getPublishSubject();
+        return receiver.getPublishSubject();
     }
 
-    private void startEmitting() {
-        PublishSubject<JsonObject> publishSubject = receiver().getPublishSubject();
+    private void startEmitting(Receiver receiver) {
+        PublishSubject<JsonObject> publishSubject = receiver.getPublishSubject();
 
-        Executors.newSingleThreadExecutor().submit(() -> produceEventsFromJson(publishSubject, () -> 200));
+        Supplier<Integer> waitForMillis = () -> 200;
+//        Supplier<Integer> waitForMillis = randomMillisWait(0,500);
+
+        Executors.newSingleThreadExecutor().submit(() -> produceEventsFromJsonFile(publishSubject, waitForMillis));
     }
+
 
 /*
     @Bean(name = "events")
@@ -51,8 +58,8 @@ public class JsonEventsEmitterConfiguration {
     }
 */
 
-    private void produceEventsFromJson(Observer<JsonObject> subscriber, Supplier<Integer> waitTimeMillis) {
-        JsonArray events = Json.readJsonArray("events.json");
+    private void produceEventsFromJsonFile(Observer<JsonObject> subscriber, Supplier<Integer> waitTimeMillis) {
+        JsonArray events = Json.readJsonArrayFromFile("events.json");
         events.forEach(ev -> {
             sleepMillis(waitTimeMillis.get());
 
@@ -63,13 +70,8 @@ public class JsonEventsEmitterConfiguration {
         });
     }
 
-    private void sleepMillis(int millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            log.error("Interrupted Thread");
-            throw new RuntimeException("Interrupted thread");
-        }
+    private Supplier<Integer> randomMillisWait(int minMillis, int maxMillis) {
+        return () -> ThreadLocalRandom.current().nextInt(minMillis, maxMillis + 1);
     }
 
 }
