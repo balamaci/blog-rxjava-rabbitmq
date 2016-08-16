@@ -2,6 +2,7 @@ package com.balamaci.rx.observable.login;
 
 import com.balamaci.rx.domain.UserLocationRating;
 import com.balamaci.rx.domain.UserScoring;
+import com.balamaci.rx.util.Json;
 import javafx.util.Pair;
 import javaslang.Tuple3;
 import org.slf4j.Logger;
@@ -12,7 +13,6 @@ import rx.Observable;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
 
-import static com.balamaci.rx.util.Json.propertyStringValue;
 
 /**
  * @author sbalamaci
@@ -36,8 +36,8 @@ public class SuccessfulLoginObservable extends LoginObservables {
     private Observable<Tuple3<String, UserScoring, UserLocationRating>> userScoringAndLocationForSuccessfulLogins() {
         return succesfullLogins()
                 .map(jsonObject ->
-                        new Pair<>(propertyStringValue("userName").call(jsonObject),
-                                propertyStringValue("remoteIP").call(jsonObject)))
+                        new Pair<>(new Json(jsonObject).propertyStringValue("userName"),
+                                new Json(jsonObject).propertyStringValue("remoteIP")))
                 .flatMap(pair -> userScoringAndLocationRatingObservable(pair.getKey(), pair.getValue()))
 
                 .doOnNext(scoringUserLocationPair -> System.out.println("UserLocation " + scoringUserLocationPair._1()));

@@ -16,6 +16,16 @@ import java.util.function.Predicate;
  */
 public class Json {
 
+    private JsonObject jsonObject;
+
+    public Json(JsonObject jsonObject) {
+        this.jsonObject = jsonObject;
+    }
+
+    public String propertyStringValue(String propertyName) {
+        return propertyStringValueFunc(propertyName).call(jsonObject);
+    }
+
     public static JsonArray readJsonArrayFromFile(String fileName) {
         File jsonTestFile = new File(fileName);
         JsonParser jsonParser = new JsonParser();
@@ -27,7 +37,7 @@ public class Json {
     }
 
 
-    public static Func1<JsonObject, String> propertyStringValue(String name) {
+    public static Func1<JsonObject, String> propertyStringValueFunc(String name) {
         return jsonObject -> {
             JsonElement propertyValue = jsonObject.get(name);
             if(propertyValue != null) {
@@ -38,7 +48,7 @@ public class Json {
         };
     }
 
-    public static Func1<JsonObject, Boolean> checkProperty(String propertyName, Predicate<String> condition) {
+    public static Func1<JsonObject, Boolean> checkPropertyFunc(String propertyName, Predicate<String> condition) {
         return jsonObject -> {
             JsonElement jsonElement = jsonObject.get(propertyName);
             if(jsonElement != null) {

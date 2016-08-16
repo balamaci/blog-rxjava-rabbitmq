@@ -44,7 +44,7 @@ public class JsonFileEmitterSourceConfiguration {
     private void startEmitting(Receiver receiver) {
         PublishSubject<JsonObject> publishSubject = receiver.getPublishSubject();
 
-        Supplier<Integer> waitForMillis = () -> 200;
+        Supplier<Integer> waitForMillis = () -> 300;
 //        Supplier<Integer> waitForMillis = randomMillisWait(0,500);
 
         new SimpleAsyncTaskExecutor("json-hardcoded-file")
@@ -65,7 +65,7 @@ public class JsonFileEmitterSourceConfiguration {
             sleepMillis(waitTimeMillis.get());
 
             JsonObject jsonObject = (JsonObject) ev;
-            log.info("Emitting {}", Json.propertyStringValue("message").call(jsonObject));
+            log.info("Emitting {}", new Json(jsonObject).propertyStringValue("message"));
 
             subscriber.onNext(jsonObject);
         });
