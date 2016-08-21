@@ -38,6 +38,7 @@ public class SuccessfulLoginObservable extends LoginObservables {
                 .map(jsonObject ->
                         new Pair<>(new Json(jsonObject).propertyStringValue("userName"),
                                 new Json(jsonObject).propertyStringValue("remoteIP")))
+                .doOnNext(userIpPair -> log.info("After map {}", userIpPair))
                 .flatMap(pair ->
                                  checkUserScoringAndLocationRating(pair.getKey(), pair.getValue())
                                  .doOnNext(tuple3 -> log.info("Tupple {}", tuple3))
@@ -47,8 +48,7 @@ public class SuccessfulLoginObservable extends LoginObservables {
     @Bean
     Subscription userScoringAndLocationSubscription() {
         return userScoringAndLocationForSuccessfulLogins()
-                .subscribeOn(Schedulers.computation())
-                .subscribe(userScoringAndLocation -> log.info("Subscriber got {} ****", userScoringAndLocation));
+                .subscribe(userScoringAndLocation -> log.info("** Subscriber got {}", userScoringAndLocation));
     }
 
 
