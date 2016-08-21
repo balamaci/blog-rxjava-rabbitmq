@@ -588,6 +588,7 @@
     "thread_name": "pool-3-thread-6",
     "message": "SUCCESS login for user\u003d\u0027larsen@gmail.com\u0027",
     "remoteIP": "192.168.0.66",
+    "userName":"larsen@gmail.com",
     "@timestamp": "2016-06-30T11:33:47.223Z",
     "host": "172.17.0.4",
     "port": 56466
@@ -658,6 +659,7 @@
     "thread_name": "pool-3-thread-6",
     "message": "SUCCESS login for user\u003d\u0027alex.mcgowan@mail.com\u0027",
     "remoteIP": "192.168.0.92",
+    "userName":"alex.mcgowan@mail.com",
     "@timestamp": "2016-06-30T11:33:48.079Z",
     "host": "172.17.0.4",
     "port": 56466
@@ -674,6 +676,7 @@
     "remoteIP": "192.168.0.18",
     "@timestamp": "2016-06-30T11:33:48.235Z",
     "host": "172.17.0.4",
+    "userName":"york@mail.com",
     "port": 56466
   },
   {
@@ -714,6 +717,7 @@
     "thread_name": "pool-3-thread-5",
     "message": "SUCCESS login for user\u003d\u0027nicholas.robbins@gmail.com\u0027",
     "remoteIP": "192.168.0.26",
+    "userName":"nicholas.robbins@gmail.com",
     "@timestamp": "2016-06-30T11:33:49.386Z",
     "host": "172.17.0.4",
     "port": 56466
