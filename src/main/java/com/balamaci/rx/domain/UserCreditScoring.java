@@ -5,15 +5,13 @@ import java.util.Arrays;
 /**
  * @author Serban Balamaci
  */
-public enum UserScoring {
+public enum UserCreditScoring {
 
-    HIGHEST,
-    HIGH,
-    MEDIUM,
-    LOW,
-    LOWEST;
+    CREDIT_CARD_STORED,
+    MOBILE_PHONE_STORED,
+    NONE;
 
-    public static UserScoring fromString(String scoringString) {
+    public static UserCreditScoring fromString(String scoringString) {
         return Arrays.stream(values())
                 .filter((scoring) -> scoring.toString().equalsIgnoreCase(scoringString))
                 .findFirst().orElse(null);
