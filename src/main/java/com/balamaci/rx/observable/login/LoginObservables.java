@@ -1,7 +1,6 @@
 package com.balamaci.rx.observable.login;
 
 import com.balamaci.rx.service.UserService;
-import com.balamaci.rx.util.Json;
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,10 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import rx.Observable;
-import rx.Subscription;
 import rx.schedulers.Schedulers;
 
-import static com.balamaci.rx.util.Json.*;
+import static com.balamaci.rx.util.Json.checkPropertyFunc;
 
 /**
  * @author sbalamaci
@@ -32,6 +30,7 @@ public class LoginObservables {
     @Bean
     Observable<JsonObject> loginEvents() {
         return events
+                .observeOn(Schedulers.io())
                 .filter(checkPropertyFunc("logger_name", val -> val.contains("LoginEvent")));
     }
 

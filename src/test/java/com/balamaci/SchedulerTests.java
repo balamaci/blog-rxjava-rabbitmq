@@ -8,7 +8,7 @@ import rx.Observable;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by sbalamaci on 04.09.2016.
+ * Created by sbalamaci
  */
 public class SchedulerTests {
 
@@ -17,18 +17,8 @@ public class SchedulerTests {
     @Test
     public void testSubscribeOn() {
         log.info("Starting");
-        Observable<Integer> observable = Observable
-                .create(subscriber -> {
-                    log.info("Started emitting");
-                    subscriber.onNext(1);
 
-//                    log.info("Emitting 2nd");
-//                    subscriber.onNext(2);
-
-                    subscriber.onCompleted();
-                });
-
-        observable
+        simpleObservable()
                 .subscribeOn(Schedulers.computation())
                 .map(val -> {
                     int newValue = val * 2;
@@ -38,12 +28,41 @@ public class SchedulerTests {
 //                .toBlocking()
                 .subscribe(val -> log.info("Subscribe received " + val));
 
-        SleepUtil.sleepMillis(3000);
-
+        SleepUtil.sleepMillis(2000);
     }
 
     @Test
     public void testObserveOn() {
-
+        simpleObservable()
+                .observeOn(Schedulers.computation())
+                .map(val -> {
+                    int newValue = val * 2;
+                    log.info("First mapping new val {}", newValue);
+                    return newValue;
+                })
+                .observeOn(Schedulers.io())
+                .map(val -> {
+                    String newValue = "*" + val + "*";
+                    log.info("Second mapping new val {}", newValue);
+                    return newValue;
+                })
+                .subscribe(val -> log.info("Subscribe received " + val));
+        SleepUtil.sleepMillis(2000);
     }
+
+    private Observable<Integer> simpleObservable() {
+        return Observable
+                .create(subscriber -> {
+                    log.info("Started emitting");
+
+                    log.info("Emitting 1st");
+                    subscriber.onNext(1);
+
+                    log.info("Emitting 2nd");
+                    subscriber.onNext(2);
+
+                    subscriber.onCompleted();
+                });
+    }
+
 }
