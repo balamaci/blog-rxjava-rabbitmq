@@ -41,6 +41,9 @@ public class AmqpSourceEmitterConfiguration {
     @Value("${amqp.port}")
     private Integer port;
 
+    @Value("${amqp.concurrent.consumers}")
+    private Integer amqpConsumerThreads;
+
 
     @Bean
     ConnectionFactory connectionFactory() {
@@ -63,6 +66,8 @@ public class AmqpSourceEmitterConfiguration {
         container.setConnectionFactory(connectionFactory);
         container.setQueueNames(queueName);
         container.setMessageListener(listenerAdapter);
+
+        container.setConcurrentConsumers(amqpConsumerThreads);
 
         return container;
     }
@@ -110,7 +115,7 @@ public class AmqpSourceEmitterConfiguration {
 
     @Bean(name = "events")
     public Observable<JsonObject> eventsStream() {
-        return receiver().getPublishSubject();
+        return receiver().getSubject();
     }
 
 }
